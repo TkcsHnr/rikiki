@@ -23,9 +23,9 @@
 	let current_round = new_round();
 
 	function get_points(bet: number | undefined, won: number | undefined) {
-		if (!bet || !won) return 0;
+		if (bet == undefined || won == undefined) return 0;
 		if (bet == won) {
-			return 10 + 2 * won;
+			return 10 + (2 * won);
 		}
 		return -2 * Math.abs(bet - won);
 	}
@@ -69,21 +69,25 @@
 	}
 </script>
 
-<form on:submit|preventDefault={() => add_player(new_player_name)} class="w-full max-w-xl">
+<form on:submit|preventDefault={() => add_player(new_player_name)} class="w-full max-w-xl flex gap-4">
 	<input
 		type="text"
 		class="input input-bordered input-primary placeholder:opacity-40 w-full"
 		placeholder="Add player"
 		bind:value={new_player_name}
 	/>
+	<button class="btn btn-success">
+		Add
+	</button>
 </form>
 {#if players.length > 0}
-	<div class="flex gap-4 w-full max-w-xl flex-wrap">
-		<button on:click={evaluate_round} class="btn btn-success grow">Evaluate</button>
-		<button on:click={reset_scores} class="btn btn-warning grow">Clear</button>
-		<button on:click={full_reset} class="btn btn-error grow">Reset</button>
-	</div>
+<div class="flex gap-4 w-full max-w-xl flex-wrap">
+	<button on:click={evaluate_round} class="btn btn-success grow">Evaluate</button>
+	<button on:click={reset_scores} class="btn btn-warning grow">Clear</button>
+	<button on:click={full_reset} class="btn btn-error grow">Reset</button>
+</div>
 
+<div></div>
 	<div class="flex flex-wrap gap-4 w-full justify-center">
 		{#each players as player, i}
 			<div class="join join-vertical indicator">
@@ -93,7 +97,7 @@
 				</div>
 				<button
 					on:click={() => remove_player(i)}
-					class="indicator-item badge badge-error badge-sm aspect-square">×</button
+					class="indicator-item indicator-center badge badge-error">×</button
 				>
 				<div class="join-item grid grid-cols-2">
 					<input
